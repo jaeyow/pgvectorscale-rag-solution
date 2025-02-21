@@ -12,14 +12,72 @@ vec = VectorStore()
 
 relevant_question = "What are your shipping options?"
 results = vec.search(relevant_question, limit=3)
+print(f"\n{results}")
 
 response = Synthesizer.generate_response(question=relevant_question, context=results)
+
+print(f"\n{response}")
 
 print(f"\n{response.answer}")
 print("\nThought process:")
 for thought in response.thought_process:
     print(f"- {thought}")
 print(f"\nContext: {response.enough_context}")
+
+# --------------------------------------------------------------
+# AIR Shipping question
+# --------------------------------------------------------------
+
+relevant_question = "What are your air shipping options?"
+results = vec.search(relevant_question, limit=5)
+print(f"\n{results}")
+
+response = Synthesizer.generate_response(question=relevant_question, context=results)
+
+print(f"\n{response}")
+
+print(f"\n{response.answer}")
+print("\nThought process:")
+for thought in response.thought_process:
+    print(f"- {thought}")
+print(f"\nContext: {response.enough_context}")
+
+# --------------------------------------------------------------
+# Discount question
+# --------------------------------------------------------------
+
+relevant_question = "What discount can you give me?"
+results = vec.search(relevant_question, limit=5)
+print(f"\n{results}")
+
+response = Synthesizer.generate_response(question=relevant_question, context=results)
+
+print(f"\n{response}")
+
+print(f"\n{response.answer}")
+print("\nThought process:")
+for thought in response.thought_process:
+    print(f"- {thought}")
+print(f"\nContext: {response.enough_context}")
+
+# --------------------------------------------------------------
+# Price match question
+# --------------------------------------------------------------
+
+relevant_question = "I found the exact same item cheaper at KMart, do you price match?"
+results = vec.search(relevant_question, limit=3)
+print(f"\n{results}")
+
+response = Synthesizer.generate_response(question=relevant_question, context=results)
+
+print(f"\n{response}")
+
+print(f"\n{response.answer}")
+print("\nThought process:")
+for thought in response.thought_process:
+    print(f"- {thought}")
+print(f"\nContext: {response.enough_context}")
+
 
 # --------------------------------------------------------------
 # Irrelevant question
@@ -77,7 +135,7 @@ results = vec.search(relevant_question, limit=3, predicates=predicates)
 # --------------------------------------------------------------
 
 # September — Returning results
-time_range = (datetime(2024, 9, 1), datetime(2024, 9, 30))
+time_range = (datetime(2024, 9, 1), datetime(2025, 2, 18))
 results = vec.search(relevant_question, limit=3, time_range=time_range)
 
 # August — Not returning any results

@@ -56,8 +56,10 @@ class Synthesizer:
                 "content": f"# Retrieved information:\n{context_str}",
             },
         ]
+        print(f"Context string: {context_str}")
 
-        llm = LLMFactory("openai")
+        # llm = LLMFactory("openai")
+        llm = LLMFactory("llama")
         return llm.create_completion(
             response_model=SynthesizedResponse,
             messages=messages,

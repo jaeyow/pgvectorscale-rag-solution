@@ -31,7 +31,14 @@ class OpenAISettings(LLMSettings):
     api_key: str = Field(default_factory=lambda: os.getenv("OPENAI_API_KEY"))
     default_model: str = Field(default="gpt-4o")
     embedding_model: str = Field(default="text-embedding-3-small")
+    
+class OllamaSettings(LLMSettings):
+    """Ollama specific settings extending LLMSettings."""
 
+    api_key: str = Field(default_factory=lambda: os.getenv("OLLAMA_API_KEY"))
+    base_url: str = Field(default_factory=lambda: os.getenv("OLLAMA_BASE_URL"))
+    default_model: str = Field(default="deepseek-r1:8b")
+    embedding_model: str = Field(default="mxbai-embed-large:latest")
 
 class DatabaseSettings(BaseModel):
     """Database connection settings."""
@@ -43,7 +50,8 @@ class VectorStoreSettings(BaseModel):
     """Settings for the VectorStore."""
 
     table_name: str = "embeddings"
-    embedding_dimensions: int = 1536
+    # embedding_dimensions: int = 768 # nomic-embed-text:latest embedding size
+    embedding_dimensions: int = 1024 # mxbai-embed-large:latest embedding size
     time_partition_interval: timedelta = timedelta(days=7)
 
 
@@ -51,6 +59,7 @@ class Settings(BaseModel):
     """Main settings class combining all sub-settings."""
 
     openai: OpenAISettings = Field(default_factory=OpenAISettings)
+    llama: OllamaSettings = Field(default_factory=OllamaSettings)
     database: DatabaseSettings = Field(default_factory=DatabaseSettings)
     vector_store: VectorStoreSettings = Field(default_factory=VectorStoreSettings)
 

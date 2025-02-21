@@ -15,8 +15,13 @@ class VectorStore:
     def __init__(self):
         """Initialize the VectorStore with settings, OpenAI client, and Timescale Vector client."""
         self.settings = get_settings()
-        self.openai_client = OpenAI(api_key=self.settings.openai.api_key)
-        self.embedding_model = self.settings.openai.embedding_model
+        # self.openai_client = OpenAI(api_key=self.settings.openai.api_key)
+        self.llama_client = OpenAI(
+            base_url=self.settings.llama.base_url,
+            api_key=self.settings.llama.api_key ,  # required, but unused
+        )
+        # self.embedding_model = self.settings.openai.embedding_model
+        self.embedding_model = self.settings.llama.embedding_model
         self.vector_settings = self.settings.vector_store
         self.vec_client = client.Sync(
             self.settings.database.service_url,
@@ -37,8 +42,16 @@ class VectorStore:
         """
         text = text.replace("\n", " ")
         start_time = time.time()
+        # embedding = (
+        #     self.openai_client.embeddings.create(
+        #         input=[text],
+        #         model=self.embedding_model,
+        #     )
+        #     .data[0]
+        #     .embedding
+        # )
         embedding = (
-            self.openai_client.embeddings.create(
+            self.llama_client.embeddings.create(
                 input=[text],
                 model=self.embedding_model,
             )
