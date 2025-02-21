@@ -139,3 +139,16 @@ When you get results from similarity_search:
 - Distances closer to 0 indicate high similarity.
 - Distances around 1 suggest little to no similarity.
 - Distances approaching 2 indicate opposite meanings (rare in practice).
+
+
+# Environment setup
+- use `pyenv` to manage python versions
+- use `venv` to manage your virtual environments
+
+```bash
+pyenv versions
+pyenv install 3.12.2
+pyenv local 3.12.2
+python -m venv .venv
+source .venv/bin/activate
+```
