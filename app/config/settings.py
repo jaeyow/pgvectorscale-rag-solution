@@ -39,6 +39,17 @@ class OllamaSettings(LLMSettings):
     base_url: str = Field(default_factory=lambda: os.getenv("OLLAMA_BASE_URL"))
     default_model: str = Field(default="deepseek-r1:8b")
     embedding_model: str = Field(default="mxbai-embed-large:latest")
+    
+class BedrockSettings(LLMSettings):
+    """Bedrock specific settings extending LLMSettings."""
+    
+    access_key: str = Field(default_factory=lambda: os.getenv("AWS_ACCESS_KEY_ID"))
+    secret_key: str = Field(default_factory=lambda: os.getenv("AWS_SECRET_ACCESS_KEY"))
+    session_token: str = Field(default_factory=lambda: os.getenv("AWS_SESSION_TOKEN"))
+    region: str = Field(default_factory=lambda: os.getenv("AWS_DEFAULT_REGION"))
+    default_model: str = Field(default="anthropic.claude-3-5-sonnet-20241022-v2:0")
+    embedding_model: str = Field(default="mxbai-embed-large:latest")
+    max_tokens: Optional[int] = 1024
 
 class DatabaseSettings(BaseModel):
     """Database connection settings."""
@@ -60,6 +71,7 @@ class Settings(BaseModel):
 
     openai: OpenAISettings = Field(default_factory=OpenAISettings)
     llama: OllamaSettings = Field(default_factory=OllamaSettings)
+    bedrock: BedrockSettings = Field(default_factory=BedrockSettings)
     database: DatabaseSettings = Field(default_factory=DatabaseSettings)
     vector_store: VectorStoreSettings = Field(default_factory=VectorStoreSettings)
 
