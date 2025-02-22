@@ -73,6 +73,6 @@ def bedrock_client(settings):
     }
     
     print(f"Settings: {settings}")
-    print(f"Default embedding model: {settings.default_model}")
+    print(f"Using embedding model: {settings.default_model}")
     
     return TitanEmbeddings(model_id=settings.default_model, **bedrock_params)

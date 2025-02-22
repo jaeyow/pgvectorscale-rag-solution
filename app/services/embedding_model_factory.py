@@ -6,7 +6,6 @@ class EmbeddingModelFactory:
     def __init__(self, provider: str):
         self.provider = provider
         self.settings = getattr(get_settings(), provider)
-        print(f"Settings for provider {self.provider}: {self.settings}")
         self.client = embedding_model_registrations.get_embedding_model_client(self.provider)(self.settings)
 
     def create_embedding(self, text: str, **kwargs) -> List[float]:

@@ -15,8 +15,6 @@ class VectorStore:
     def __init__(self):
         """Initialize the VectorStore with settings, OpenAI client, and Timescale Vector client."""
         self.settings = get_settings()
-        print(f"Settings: {self.settings}")
-        # self.embedding_model_client = EmbeddingModelFactory("llama")
         self.embedding_model_client = EmbeddingModelFactory("bedrock_embedding_model")
         self.vector_settings = self.settings.vector_store
         self.vec_client = client.Sync(
