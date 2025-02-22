@@ -15,6 +15,12 @@
 > - I have added support for **Amazon Bedrock** to have access the **Anthropic Claude** models there. A bit of adjustments to **Bedrock embedding models** so that the calls are now identical to OpenAI or Ollama embedding models.
 > 
 > - I have created a similar factory class for embedding models (**EmbeddingModelFactory**), so that you can now mix and match **different LLMs** with **different embedding models**.
+>
+> - This means I can now use say **DeepSeek R1 running on Ollama locally** and **Titan embedding model** from AWS.
+>
+>- Or **Anthropic Claude Sonnet 3.5** in Amazon Bedrock with **Ollama local embedding model**.
+>
+> - Or **both the LLM and embedding model from Amazon Bedrock**. This is a great way to experiment with different models and not have to change a lot of code.
 
 This tutorial will guide you through setting up and using `pgvectorscale` with Docker and Python, leveraging OpenAI's powerful `text-embedding-3-small` model for embeddings. You'll learn to build a cutting-edge RAG (Retrieval-Augmented Generation) solution, combining advanced retrieval techniques (including hybrid search) with intelligent answer generation based on the retrieved context. Perfect for AI engineers looking to enhance their projects with state-of-the-art vector search and generation capabilities with the power of PostgreSQL.
 
