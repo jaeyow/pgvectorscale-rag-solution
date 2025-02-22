@@ -5,7 +5,6 @@ from datetime import datetime
 
 import pandas as pd
 from config.settings import get_settings
-from openai import OpenAI
 from timescale_vector import client
 from services.embedding_model_factory import EmbeddingModelFactory
 
@@ -16,7 +15,9 @@ class VectorStore:
     def __init__(self):
         """Initialize the VectorStore with settings, OpenAI client, and Timescale Vector client."""
         self.settings = get_settings()
-        self.embedding_model_client = EmbeddingModelFactory("llama")
+        print(f"Settings: {self.settings}")
+        # self.embedding_model_client = EmbeddingModelFactory("llama")
+        self.embedding_model_client = EmbeddingModelFactory("bedrock_embedding_model")
         self.vector_settings = self.settings.vector_store
         self.vec_client = client.Sync(
             self.settings.database.service_url,
@@ -39,6 +40,8 @@ class VectorStore:
         start_time = time.time()
 
         embedding = self.embedding_model_client.create_embedding(text)
+        print(f"Embedding model client: {self.embedding_model_client}")
+        print(f"Embedding size: {len(embedding)}")
         elapsed_time = time.time() - start_time
         logging.info(f"Embedding generated in {elapsed_time:.3f} seconds")
         return embedding

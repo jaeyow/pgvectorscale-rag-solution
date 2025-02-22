@@ -60,7 +60,7 @@ def llama_client(settings):
         api_key=settings.api_key,  # required, but unused
     )
     
-@register_embedding_model_client("embedding_model")
+@register_embedding_model_client("bedrock_embedding_model")
 def bedrock_client(settings):
     """
     Create a Bedrock embedding model client
@@ -71,5 +71,8 @@ def bedrock_client(settings):
         "aws_session_token": settings.session_token,
         "region_name": settings.region,
     }
+    
+    print(f"Settings: {settings}")
+    print(f"Default embedding model: {settings.default_model}")
     
     return TitanEmbeddings(model_id=settings.default_model, **bedrock_params)

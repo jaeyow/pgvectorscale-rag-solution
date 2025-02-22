@@ -38,8 +38,10 @@ class OpenAISettings(LLMSettings):
 class OllamaSettings(LLMSettings):
     """Ollama specific settings extending LLMSettings."""
 
-    api_key: str = Field(default_factory=lambda: os.getenv("OLLAMA_API_KEY"))
-    base_url: str = Field(default_factory=lambda: os.getenv("OLLAMA_BASE_URL"))
+    # api_key: str = Field(default_factory=lambda: os.getenv("OLLAMA_API_KEY"))
+    # base_url: str = Field(default_factory=lambda: os.getenv("OLLAMA_BASE_URL"))
+    api_key: str = Field(default="ollama")
+    base_url: str = Field(default="http://localhost:11434/v1")
     default_model: str = Field(default="deepseek-r1:8b")
     embedding_model: str = Field(default="mxbai-embed-large:latest")
     
@@ -82,7 +84,7 @@ class Settings(BaseModel):
     bedrock: BedrockSettings = Field(default_factory=BedrockSettings)
     database: DatabaseSettings = Field(default_factory=DatabaseSettings)
     vector_store: VectorStoreSettings = Field(default_factory=VectorStoreSettings)
-    embedding_model: BedrockEmbeddingModelSettings = Field(default_factory=BedrockEmbeddingModelSettings)
+    bedrock_embedding_model: BedrockEmbeddingModelSettings = Field(default_factory=BedrockEmbeddingModelSettings)
 
 
 @lru_cache()

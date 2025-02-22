@@ -14,7 +14,7 @@ relevant_question = "What are your shipping options?"
 results = vec.search(relevant_question, limit=3)
 # print(f"\n{results}")
 
-response = Synthesizer.generate_response(question=relevant_question, context=results, llm_client="ollama")
+response = Synthesizer.generate_response(question=relevant_question, context=results)
 
 print(f"\n{response}")
 
@@ -30,7 +30,7 @@ print(f"\nContext: {response.enough_context}")
 
 relevant_question = "What are your air shipping options?"
 results = vec.search(relevant_question, limit=5)
-print(f"\n{results}")
+# print(f"\n{results}")
 
 response = Synthesizer.generate_response(question=relevant_question, context=results)
 
@@ -48,7 +48,7 @@ print(f"\nContext: {response.enough_context}")
 
 relevant_question = "What discount can you give me?"
 results = vec.search(relevant_question, limit=5)
-print(f"\n{results}")
+# print(f"\n{results}")
 
 response = Synthesizer.generate_response(question=relevant_question, context=results)
 
@@ -66,7 +66,7 @@ print(f"\nContext: {response.enough_context}")
 
 relevant_question = "I found the exact same item cheaper at KMart, do you price match?"
 results = vec.search(relevant_question, limit=3)
-print(f"\n{results}")
+# print(f"\n{results}")
 
 response = Synthesizer.generate_response(question=relevant_question, context=results)
 
