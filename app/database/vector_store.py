@@ -12,10 +12,11 @@ from services.embedding_model_factory import EmbeddingModelFactory
 class VectorStore:
     """A class for managing vector operations and database interactions."""
 
-    def __init__(self):
+    def __init__(self, embedding_model_client="bedrock_embedding_model"):
         """Initialize the VectorStore with settings, OpenAI client, and Timescale Vector client."""
         self.settings = get_settings()
-        self.embedding_model_client = EmbeddingModelFactory("bedrock_embedding_model")
+        self.embedding_model_client = EmbeddingModelFactory(embedding_model_client)
+        
         self.vector_settings = self.settings.vector_store
         self.vec_client = client.Sync(
             self.settings.database.service_url,
@@ -38,7 +39,6 @@ class VectorStore:
         start_time = time.time()
 
         embedding = self.embedding_model_client.create_embedding(text)
-        print(f"Embedding size: {len(embedding)}")
         elapsed_time = time.time() - start_time
         logging.info(f"Embedding generated in {elapsed_time:.3f} seconds")
         return embedding

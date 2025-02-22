@@ -14,10 +14,9 @@ class EmbeddingModelFactory:
             return self.client(text)
         else:
             embedding_params = {
-                "model": kwargs.get("model", self.settings.embedding_model),
+                "model": kwargs.get("model", self.settings.default_model),
                 "input": [text],
             }
-            print(f"Embedding params: {embedding_params}")
             
             return (
                     self.client.embeddings.create(**embedding_params)

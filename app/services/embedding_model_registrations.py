@@ -1,5 +1,5 @@
 from openai import OpenAI
-from services.TitanEmbeddings import TitanEmbeddings
+from services.titan_embeddings import TitanEmbeddings
 
 ####################
 # This is where we register the embedding mdoel clients that can be used by the EmbeddingModelFactory.
@@ -39,29 +39,37 @@ def get_embedding_model_client(embedding_model_client):
 # as this module is imported. There is no need to touch the EmbeddingModelFactory class.
 
 
-@register_embedding_model_client("openai")
-def openai_client(settings):
+@register_embedding_model_client("openai_embedding_model")
+def openai_embedding_model_client(settings):
     """
     Create an OpenAI embedding model client.
     """
+    
+    print(f"Settings: {settings}")
+    print(f"Using embedding model: {settings.default_model}")    
+    
     return OpenAI(
         base_url=settings.base_url,
-        api_key=settings.api_key,  # required, but unused
+        api_key=settings.api_key,
     )
 
-@register_embedding_model_client("llama")
-def llama_client(settings):
+@register_embedding_model_client("llama_embedding_model")
+def llama_embedding_model_client(settings):
     """
     Create an Ollama embedding model client.
     Note that Ollama is OpenAI compatible, so we can continue use the OpenAI client.
     """
+    
+    print(f"Settings: {settings}")
+    print(f"Using embedding model: {settings.default_model}")    
+    
     return OpenAI(
         base_url=settings.base_url,
         api_key=settings.api_key,  # required, but unused
     )
     
 @register_embedding_model_client("bedrock_embedding_model")
-def bedrock_client(settings):
+def bedrock_embedding_model_client(settings):
     """
     Create a Bedrock embedding model client
     """
