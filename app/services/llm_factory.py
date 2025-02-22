@@ -12,6 +12,7 @@ class LLMFactory:
     def create_completion(
         self, response_model: Type[BaseModel], messages: List[Dict[str, str]], **kwargs
     ) -> Any:
+        print(f"Using LLM: {kwargs.get('model', self.settings.default_model)}")
         completion_params = {
             "model": kwargs.get("model", self.settings.default_model),
             "temperature": kwargs.get("temperature", self.settings.temperature),

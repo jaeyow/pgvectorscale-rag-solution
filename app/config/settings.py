@@ -23,7 +23,10 @@ class LLMSettings(BaseModel):
     temperature: float = 0.0
     max_tokens: Optional[int] = None
     max_retries: int = 3
-
+    
+class EmbeddingModelSettings(BaseModel):
+    """Base settings for Embedding Model configurations."""
+    default_model: str = Field(default="text-embedding-3-small")
 
 class OpenAISettings(LLMSettings):
     """OpenAI-specific settings extending LLMSettings."""
@@ -48,7 +51,6 @@ class BedrockSettings(LLMSettings):
     session_token: str = Field(default_factory=lambda: os.getenv("AWS_SESSION_TOKEN"))
     region: str = Field(default_factory=lambda: os.getenv("AWS_DEFAULT_REGION"))
     default_model: str = Field(default="anthropic.claude-3-5-sonnet-20241022-v2:0")
-    embedding_model: str = Field(default="mxbai-embed-large:latest")
     max_tokens: Optional[int] = 1024
 
 class DatabaseSettings(BaseModel):
@@ -61,10 +63,16 @@ class VectorStoreSettings(BaseModel):
     """Settings for the VectorStore."""
 
     table_name: str = "embeddings"
-    # embedding_dimensions: int = 768 # nomic-embed-text:latest embedding size
-    embedding_dimensions: int = 1024 # mxbai-embed-large:latest embedding size
+    embedding_dimensions: int = 1024 
     time_partition_interval: timedelta = timedelta(days=7)
-
+    
+class BedrockEmbeddingModelSettings(EmbeddingModelSettings):
+    """Bedrock specific settings extending EmbeddingModelSettings."""
+    default_model: str = Field(default="amazon.titan-embed-text-v2:0")
+    access_key: str = Field(default_factory=lambda: os.getenv("AWS_ACCESS_KEY_ID"))
+    secret_key: str = Field(default_factory=lambda: os.getenv("AWS_SECRET_ACCESS_KEY"))
+    session_token: str = Field(default_factory=lambda: os.getenv("AWS_SESSION_TOKEN"))
+    region: str = Field(default_factory=lambda: os.getenv("AWS_DEFAULT_REGION"))
 
 class Settings(BaseModel):
     """Main settings class combining all sub-settings."""
@@ -74,6 +82,7 @@ class Settings(BaseModel):
     bedrock: BedrockSettings = Field(default_factory=BedrockSettings)
     database: DatabaseSettings = Field(default_factory=DatabaseSettings)
     vector_store: VectorStoreSettings = Field(default_factory=VectorStoreSettings)
+    bedrock_embedding_model: BedrockEmbeddingModelSettings = Field(default_factory=BedrockEmbeddingModelSettings)
 
 
 @lru_cache()
