@@ -9,10 +9,12 @@ from openai import OpenAI
 
 LLMS = {}
 
+
 def register_llm_client(llm_client):
     """
     Register a function to create an LLM client.
     """
+
     def decorator(fn):
         """
         Decorator function to register an LLM client.
@@ -21,6 +23,7 @@ def register_llm_client(llm_client):
         return fn
 
     return decorator
+
 
 def get_llm_client(llm_client):
     """
@@ -31,9 +34,11 @@ def get_llm_client(llm_client):
     except KeyError:
         raise ValueError(f"LLM client '{llm_client}' is not registered.")
 
+
 # Register LLM clients
 # Add your LLM client registration functions here and they will be automatically registered
 # as this module is imported. There is no need to touch the LLMFactory class.
+
 
 @register_llm_client("openai")
 def openai_client(settings):
@@ -42,12 +47,14 @@ def openai_client(settings):
     """
     return instructor.from_openai(OpenAI(api_key=settings.api_key))
 
+
 @register_llm_client("anthropic")
 def anthropic_client(settings):
     """
     Create an Anthropic LLM client.
     """
     return instructor.from_anthropic(anthropic.Anthropic(api_key=settings.api_key))
+
 
 @register_llm_client("llama")
 def llama_client(settings):
@@ -59,7 +66,8 @@ def llama_client(settings):
         OpenAI(base_url=settings.base_url, api_key=settings.api_key),
         mode=instructor.Mode.JSON,
     )
-    
+
+
 @register_llm_client("bedrock")
 def bedrock_client(settings):
     """
@@ -71,7 +79,6 @@ def bedrock_client(settings):
         aws_session_token=settings.session_token,
         aws_region=settings.region,
     )
-    
+
     instructor_client = instructor.from_anthropic(client)
     return instructor_client
-    

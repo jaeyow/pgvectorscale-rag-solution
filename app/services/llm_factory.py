@@ -3,6 +3,7 @@ from pydantic import BaseModel
 from config.settings import get_settings
 import services.llm_registrations as llm_registrations
 
+
 class LLMFactory:
     def __init__(self, provider: str):
         self.provider = provider

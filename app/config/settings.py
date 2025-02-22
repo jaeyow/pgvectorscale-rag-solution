@@ -2,10 +2,16 @@ import logging
 import os
 from datetime import timedelta
 from functools import lru_cache
-from typing import Optional
 
 from dotenv import load_dotenv
 from pydantic import BaseModel, Field
+
+from config.embedding_model_settings import (
+    BedrockEmbeddingModelSettings,
+    OllamaEmbeddingModelSettings,
+    OpenAIEmbeddingModelSettings,
+)
+from config.llm_settings import BedrockSettings, OllamaSettings, OpenAISettings
 
 load_dotenv(dotenv_path="./.env")
 
@@ -17,42 +23,6 @@ def setup_logging():
     )
 
 
-class LLMSettings(BaseModel):
-    """Base settings for Language Model configurations."""
-
-    temperature: float = 0.0
-    max_tokens: Optional[int] = None
-    max_retries: int = 3
-    
-class EmbeddingModelSettings(BaseModel):
-    """Base settings for Embedding Model configurations."""
-    default_model: str = Field(default="text-embedding-3-small")
-
-class OpenAISettings(LLMSettings):
-    """OpenAI-specific settings extending LLMSettings."""
-
-    api_key: str = Field(default_factory=lambda: os.getenv("OPENAI_API_KEY"))
-    default_model: str = Field(default="gpt-4o")
-    embedding_model: str = Field(default="text-embedding-3-small")
-    
-class OllamaSettings(LLMSettings):
-    """Ollama specific settings extending LLMSettings."""
-
-    api_key: str = Field(default_factory=lambda: os.getenv("OLLAMA_API_KEY"))
-    base_url: str = Field(default_factory=lambda: os.getenv("OLLAMA_BASE_URL"))
-    default_model: str = Field(default="deepseek-r1:8b")
-    embedding_model: str = Field(default="mxbai-embed-large:latest")
-    
-class BedrockSettings(LLMSettings):
-    """Bedrock specific settings extending LLMSettings."""
-    
-    access_key: str = Field(default_factory=lambda: os.getenv("AWS_ACCESS_KEY_ID"))
-    secret_key: str = Field(default_factory=lambda: os.getenv("AWS_SECRET_ACCESS_KEY"))
-    session_token: str = Field(default_factory=lambda: os.getenv("AWS_SESSION_TOKEN"))
-    region: str = Field(default_factory=lambda: os.getenv("AWS_DEFAULT_REGION"))
-    default_model: str = Field(default="anthropic.claude-3-5-sonnet-20241022-v2:0")
-    max_tokens: Optional[int] = 1024
-
 class DatabaseSettings(BaseModel):
     """Database connection settings."""
 
@@ -63,16 +33,9 @@ class VectorStoreSettings(BaseModel):
     """Settings for the VectorStore."""
 
     table_name: str = "embeddings"
-    embedding_dimensions: int = 1024 
+    embedding_dimensions: int = 1024
     time_partition_interval: timedelta = timedelta(days=7)
-    
-class BedrockEmbeddingModelSettings(EmbeddingModelSettings):
-    """Bedrock specific settings extending EmbeddingModelSettings."""
-    default_model: str = Field(default="amazon.titan-embed-text-v2:0")
-    access_key: str = Field(default_factory=lambda: os.getenv("AWS_ACCESS_KEY_ID"))
-    secret_key: str = Field(default_factory=lambda: os.getenv("AWS_SECRET_ACCESS_KEY"))
-    session_token: str = Field(default_factory=lambda: os.getenv("AWS_SESSION_TOKEN"))
-    region: str = Field(default_factory=lambda: os.getenv("AWS_DEFAULT_REGION"))
+
 
 class Settings(BaseModel):
     """Main settings class combining all sub-settings."""
@@ -82,7 +45,15 @@ class Settings(BaseModel):
     bedrock: BedrockSettings = Field(default_factory=BedrockSettings)
     database: DatabaseSettings = Field(default_factory=DatabaseSettings)
     vector_store: VectorStoreSettings = Field(default_factory=VectorStoreSettings)
-    bedrock_embedding_model: BedrockEmbeddingModelSettings = Field(default_factory=BedrockEmbeddingModelSettings)
+    openai_embedding_model: OpenAIEmbeddingModelSettings = Field(
+        default_factory=OpenAIEmbeddingModelSettings
+    )
+    llama_embedding_model: OllamaEmbeddingModelSettings = Field(
+        default_factory=OllamaEmbeddingModelSettings
+    )
+    bedrock_embedding_model: BedrockEmbeddingModelSettings = Field(
+        default_factory=BedrockEmbeddingModelSettings
+    )
 
 
 @lru_cache()
