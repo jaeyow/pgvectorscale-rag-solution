@@ -16,7 +16,7 @@ class VectorStore:
         """Initialize the VectorStore with settings, OpenAI client, and Timescale Vector client."""
         self.settings = get_settings()
         self.embedding_model_client = EmbeddingModelFactory(embedding_model_client)
-        
+
         self.vector_settings = self.settings.vector_store
         self.vec_client = client.Sync(
             self.settings.database.service_url,

@@ -34,7 +34,11 @@ class Synthesizer:
     """
 
     @staticmethod
-    def generate_response(question: str, context: pd.DataFrame, llm_client: str = "bedrock",) -> SynthesizedResponse:
+    def generate_response(
+        question: str,
+        context: pd.DataFrame,
+        llm_client: str = "bedrock",
+    ) -> SynthesizedResponse:
         """Generates a synthesized response based on the question and context.
 
         Args:
@@ -47,7 +51,7 @@ class Synthesizer:
         context_str = Synthesizer.dataframe_to_json(
             context, columns_to_keep=["content", "category"]
         )
-        
+
         if llm_client not in ["bedrock", "anthropic"]:
             messages = [
                 {"role": "system", "content": Synthesizer.SYSTEM_PROMPT},
@@ -61,9 +65,12 @@ class Synthesizer:
             # Anthropic (including Anthropic Bedrock) do not suport assistant role
             messages = [
                 {"role": "system", "content": Synthesizer.SYSTEM_PROMPT},
-                {"role": "user", "content": f"# User question:\n{question}, Retrieved information:\n{context_str}"},
+                {
+                    "role": "user",
+                    "content": f"# User question:\n{question}, Retrieved information:\n{context_str}",
+                },
             ]
-        
+
         # print(f"Context string: {context_str}")
 
         llm = LLMFactory(llm_client)

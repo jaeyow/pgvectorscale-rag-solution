@@ -3,13 +3,15 @@ from typing import Optional
 
 from pydantic import BaseModel, Field
 
+
 class LLMSettings(BaseModel):
     """Base settings for Language Model configurations."""
 
     temperature: float = 0.0
     max_tokens: Optional[int] = None
     max_retries: int = 3
-    
+
+
 class OpenAISettings(LLMSettings):
     """OpenAI-specific settings extending LLMSettings."""
 

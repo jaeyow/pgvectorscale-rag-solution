@@ -2,6 +2,16 @@ import json
 import boto3
 
 
+class EmbeddingResponse:
+    def __init__(self, embedding):
+        self.data = [EmbeddingData(embedding)]
+
+
+class EmbeddingData:
+    def __init__(self, embedding):
+        self.embedding = embedding
+
+
 class TitanEmbeddings(object):
     accept = "application/json"
     content_type = "application/json"
@@ -22,25 +32,27 @@ class TitanEmbeddings(object):
 
         self.model_id = model_id
 
-    def __call__(self, text, dimensions=1024, normalize=True):
+    def create(self, model, input, dimensions=1024, normalize=True):
         """
         Returns Titan Embeddings
         Args:
-            text (str): text to embed
+            model (str): model id to use for embedding
+            input (list): list of text to embed
             dimensions (int): Number of output dimensions.
             normalize (bool): Whether to return the normalized embedding or not.
         Return:
-            List[float]: Embedding
+            EmbeddingResponse: Embedding response object
 
         """
         body = json.dumps(
-            {"inputText": text, "dimensions": dimensions, "normalize": normalize}
+            {"inputText": input[0], "dimensions": dimensions, "normalize": normalize}
         )
         response = self.bedrock.invoke_model(
             body=body,
-            modelId=self.model_id,
+            modelId=model,
             accept=self.accept,
             contentType=self.content_type,
         )
         response_body = json.loads(response.get("body").read())
-        return response_body["embedding"]
+        embedding = response_body["embedding"]
+        return EmbeddingResponse(embedding)
