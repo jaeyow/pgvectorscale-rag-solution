@@ -26,7 +26,7 @@ class LLMSettings(BaseModel):
     
 class EmbeddingModelSettings(BaseModel):
     """Base settings for Embedding Model configurations."""
-    default_model: str = Field(default="amazon.titan-embed-text-v2:0")
+    default_model: str = Field(default="text-embedding-3-small")
 
 class OpenAISettings(LLMSettings):
     """OpenAI-specific settings extending LLMSettings."""
@@ -38,10 +38,8 @@ class OpenAISettings(LLMSettings):
 class OllamaSettings(LLMSettings):
     """Ollama specific settings extending LLMSettings."""
 
-    # api_key: str = Field(default_factory=lambda: os.getenv("OLLAMA_API_KEY"))
-    # base_url: str = Field(default_factory=lambda: os.getenv("OLLAMA_BASE_URL"))
-    api_key: str = Field(default="ollama")
-    base_url: str = Field(default="http://localhost:11434/v1")
+    api_key: str = Field(default_factory=lambda: os.getenv("OLLAMA_API_KEY"))
+    base_url: str = Field(default_factory=lambda: os.getenv("OLLAMA_BASE_URL"))
     default_model: str = Field(default="deepseek-r1:8b")
     embedding_model: str = Field(default="mxbai-embed-large:latest")
     
@@ -53,7 +51,6 @@ class BedrockSettings(LLMSettings):
     session_token: str = Field(default_factory=lambda: os.getenv("AWS_SESSION_TOKEN"))
     region: str = Field(default_factory=lambda: os.getenv("AWS_DEFAULT_REGION"))
     default_model: str = Field(default="anthropic.claude-3-5-sonnet-20241022-v2:0")
-    # embedding_model: str = Field(default="mxbai-embed-large:latest")
     max_tokens: Optional[int] = 1024
 
 class DatabaseSettings(BaseModel):
@@ -71,6 +68,7 @@ class VectorStoreSettings(BaseModel):
     
 class BedrockEmbeddingModelSettings(EmbeddingModelSettings):
     """Bedrock specific settings extending EmbeddingModelSettings."""
+    default_model: str = Field(default="amazon.titan-embed-text-v2:0")
     access_key: str = Field(default_factory=lambda: os.getenv("AWS_ACCESS_KEY_ID"))
     secret_key: str = Field(default_factory=lambda: os.getenv("AWS_SECRET_ACCESS_KEY"))
     session_token: str = Field(default_factory=lambda: os.getenv("AWS_SESSION_TOKEN"))

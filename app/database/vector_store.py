@@ -40,7 +40,6 @@ class VectorStore:
         start_time = time.time()
 
         embedding = self.embedding_model_client.create_embedding(text)
-        print(f"Embedding model client: {self.embedding_model_client}")
         print(f"Embedding size: {len(embedding)}")
         elapsed_time = time.time() - start_time
         logging.info(f"Embedding generated in {elapsed_time:.3f} seconds")
