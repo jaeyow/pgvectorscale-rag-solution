@@ -14,7 +14,7 @@ relevant_question = "What are your shipping options?"
 results = vec.search(relevant_question, limit=3)
 # print(f"\n{results}")
 
-response = Synthesizer.generate_response(question=relevant_question, context=results)
+response = Synthesizer.generate_response(question=relevant_question, context=results, llm_client="ollama")
 
 print(f"\n{response}")
 
